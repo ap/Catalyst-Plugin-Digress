@@ -5,7 +5,7 @@ package Catalyst::Plugin::Digress;
 use Scalar::Util ();
 use Carp ();
 
-our $VERSION = '1.000';
+our $VERSION = '1.001';
 
 sub digress {
 	my $c = shift;
@@ -76,7 +76,13 @@ Catalyst::Plugin::Digress - A cleaner, simpler, action-only $c->forward
 =head1 DESCRIPTION
 
 This plugin gives you the useful part of the Catalyst C<forward> method without
-the weirdness (or the madness):
+the weirdness (or the madness).
+
+=head1 METHODS
+
+=head2 C<digress>
+
+This is akin to C<forward>, with the following differences:
 
 =over 2
 
