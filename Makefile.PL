@@ -18,16 +18,16 @@ my %META = (
 	prereqs => {
 		runtime => {
 			requires => {qw(
-				perl             5.008001
-				Carp                    0
-				Scalar::Util            0
-				Catalyst          5.71000
+				perl 5.008001
+				Carp 0
+				Scalar::Util 0
+				Catalyst 5.71000
 			)},
 		},
 		test => {
 			requires => {qw(
-				Test::More              0
-				Catalyst::Test          0
+				Test::More 0
+				Catalyst::Test 0
 			)},
 		},
 	},
