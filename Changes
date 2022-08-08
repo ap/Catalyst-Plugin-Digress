@@ -1,5 +1,9 @@
 Release history for Catalyst-Plugin-Digress
 
+1.004 Sun 07 Aug 2022
+	- No functional changes
+	- Packaging fix to stop installing boilerplate.pl
+
 1.003 Sun 07 Aug 2022
 	- No functional changes
 	- Updated package metadata
