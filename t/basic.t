@@ -32,6 +32,14 @@ use Test::More tests => 2;
 
 	package MyApp;
 	use Catalyst 'Digress';
+
+	# throw away the unreadable standard error response wall of markup
+	sub finalize_error {
+		my $c = shift;
+		$c->SUPER::finalize_error;
+		$c->response->body( join '', @{ $c->error } );
+	}
+
 	__PACKAGE__->setup;
 }
 
