@@ -39,7 +39,7 @@ sub digress {
 	# using a scope guard to unwind the Catalyst stack allows this call to
 	# happen as the last thing in the function, which avoids the need to
 	# explicitly recreate caller context with wantarray
-	$action->code->( $c->components->{ $action->class }, $c, @_ );
+	$action->execute( $c->components->{ $action->class }, $c, @_ );
 }
 
 sub Catalyst::Plugin::Digress::_ScopeGuard::DESTROY {

@@ -1,6 +1,15 @@
-use Test::More tests => 2;
+use Test::More tests => 4;
 
 {
+	package Catalyst::Action::Null;
+	$INC{'Catalyst/Action/Null.pm'} = __FILE__;
+	use base 'Catalyst::Action';
+
+	sub execute {
+		my ( $self, $controller, $c ) = ( shift, @_ );
+		$c->response->body( 'Carpe diem' );
+	}
+
 	package MyApp::Controller::Entry;
 	$INC{'MyApp/Controller/Entry.pm'} = __FILE__;
 	use base 'Catalyst::Controller';
@@ -16,6 +25,8 @@ use Test::More tests => 2;
 		$c->digress( 'target', $who );
 	}
 
+	sub null : ActionClass('Null') { die 'Condolences' }
+
 	package MyApp::Controller::Root;
 	$INC{'MyApp/Controller/Root.pm'} = __FILE__;
 	use base 'Catalyst::Controller';
@@ -28,6 +39,11 @@ use Test::More tests => 2;
 		my ( $self, $c ) = ( shift, @_ );
 		$c->digress( '/entry/bounce', 'myself' );
 		die 'Condolences';
+	}
+
+	sub null : Local {
+		my ( $self, $c ) = ( shift, @_ );
+		$c->digress( '/entry/null' );
 	}
 
 	package MyApp;
@@ -49,4 +65,10 @@ use Catalyst::Test 'MyApp';
 	my $res = request '/';
 	is $res->code, 200, 'Exception averted';
 	is $res->content, 'Congrats to myself', 'Response received';
+}
+
+{ # check whether action class/role overriding execute() works
+	my $res = request '/null';
+	is $res->code, 200, 'Exception averted via ActionClass';
+	is $res->content, 'Carpe diem', 'Response received via ActionClass';
 }
