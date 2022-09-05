@@ -38,7 +38,7 @@ use Test::More tests => 2;
 use Catalyst::Test 'MyApp';
 
 {
-  my $res = request '/';
-  is $res->code, 200, 'Exception averted';
-  is $res->content, 'Congrats to myself', 'Response received';
+	my $res = request '/';
+	is $res->code, 200, 'Exception averted';
+	is $res->content, 'Congrats to myself', 'Response received';
 }
