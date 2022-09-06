@@ -9,16 +9,12 @@ our $VERSION = '1.100';
 
 sub digress {
 	my $c = shift;
+	my $action = shift;
 
-	my ( $action, $path );
-	if ( Scalar::Util::blessed( $_[0] ) && $_[0]->isa( 'Catalyst::Action' ) ) {
-		$action = shift;
-	}
-	else {
-		$path   = shift;
-		$path   = $c->stack->[-1]->namespace . '/' . $path if $path !~ m!/!;
-		$action = $c->dispatcher->get_action_by_path( $path )
-			or Carp::croak "Cannot digress to nonexistant action '$path'";
+	unless ( Scalar::Util::blessed( $action ) && $action->isa( 'Catalyst::Action' ) ) {
+		$action = $c->stack->[-1]->namespace . '/' . $action if $action !~ m!/!;
+		$action = $c->dispatcher->get_action_by_path( $action )
+			|| Carp::croak "Cannot digress to nonexistant action '$action'";
 	}
 
 	my $scope_guard = bless [ $c ], 'Catalyst::Plugin::Digress::_ScopeGuard';
