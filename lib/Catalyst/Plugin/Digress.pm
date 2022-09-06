@@ -19,14 +19,15 @@ sub digress {
 
 	my $scope_guard = bless [ $c ], 'Catalyst::Plugin::Digress::_ScopeGuard';
 	if ( $c->use_stats ) { # basically Catalyst::_stats_start_execute with less nonsense
+		my $counter = $c->counter;
 		my $action_name = $action->reverse;
-		my $uid = $action_name . ++$c->counter->{ $action_name };
+		my $uid = $action_name . ++$counter->{ $action_name };
 		my $stats_info = '-> ' . ( $action_name =~ /->/ ? '' : '/' ) . $action_name;
-		my ( $parent ) = grep exists $c->counter->{ $_ }, $c->stack->[-1] || ();
+		my $p = $c->stack->[-1];
 		$c->stats->profile(
-			begin => $stats_info,
-			uid   => $uid,
-			$parent ? ( parent => $parent . $c->counter->{ $parent } ) : (),
+			begin  => $stats_info,
+			uid    => $uid,
+			parent => ( $p && exists $counter->{ $p = $p->reverse } ? $p . $counter->{ $p } : undef ),
 		);
 		push @$scope_guard, $stats_info;
 	}
