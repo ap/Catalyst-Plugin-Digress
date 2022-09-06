@@ -5,7 +5,7 @@ package Catalyst::Plugin::Digress;
 use Scalar::Util ();
 use Carp ();
 
-our $VERSION = '1.100';
+our $VERSION = '1.101';
 
 sub digress {
 	my $c = shift;
